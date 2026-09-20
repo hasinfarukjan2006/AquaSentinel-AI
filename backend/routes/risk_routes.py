@@ -6,12 +6,13 @@ risk_bp = Blueprint('risk', __name__)
 predictor = RiskPredictor()
 
 @risk_bp.route('/api/risk', methods=['GET'])
+@risk_bp.route('/api/risk-monitoring', methods=['GET'])
 def get_risk_records():
     data_type = request.args.get('data_type', 'REAL_PUBLIC_SOURCE')
     district = request.args.get('district')
     state = request.args.get('state')
     risk_class = request.args.get('risk_class')
-    limit = int(request.args.get('limit', 100))
+    limit = int(request.args.get('limit', 500))
 
     query = "SELECT * FROM risk_scores WHERE data_type = ?"
     params = [data_type]
@@ -54,14 +55,14 @@ def get_location_risk(location):
 
     latest = records[0]
 
-    # Verification recommendation wording generator
+    # Verification recommendation generator
     score = latest['risk_score']
-    if score >= 71.0:
-        recommendation = "Elevated risk pattern detected — local health and water sample verification recommended immediately."
-    elif score >= 51.0:
-        recommendation = "Moderate-to-high environmental risk signal — verify local water treatment and reported symptoms."
+    if score >= 47.0:
+        recommendation = "Elevated risk pattern detected — local health and water sample verification recommended."
+    elif score >= 40.0:
+        recommendation = "Moderate environmental risk signal — verify local water treatment and reported symptoms."
     else:
-        recommendation = "Routine monitoring — indicators currently within acceptable prototype baseline thresholds."
+        recommendation = "Routine monitoring — indicators currently within acceptable baseline thresholds."
 
     return jsonify({
         'found': True,

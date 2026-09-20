@@ -1,7 +1,6 @@
 import os
 import pandas as pd
 from flask import Blueprint, jsonify, request
-from backend.config import PROCESSED_DIR
 from backend.database import query_db
 
 data_bp = Blueprint('data', __name__)
@@ -28,20 +27,26 @@ def get_locations():
 def get_water_quality():
     data_type = request.args.get('data_type', 'REAL_PUBLIC_SOURCE')
     district = request.args.get('district')
-    
-    file_name = 'synthetic_demo_dataset.csv' if data_type == 'SYNTHETIC_DEMO' else 'JalRakshak_Integrated_Dataset.csv'
-    csv_path = os.path.join(PROCESSED_DIR, file_name)
+    limit = int(request.args.get('limit', 600))
 
-    if os.path.exists(csv_path):
-        df = pd.read_csv(csv_path)
+    if data_type == 'SYNTHETIC_DEMO':
+        query = "SELECT * FROM risk_scores WHERE data_type = ?"
+        params = [data_type]
         if district:
-            df = df[df['district'].str.contains(district, case=False, na=False)]
-        
-        records = df[['record_id', 'state', 'district', 'station_location', 'year', 'season',
-                      'ph', 'ec_us_cm', 'tds_mg_l', 'cl_mg_l', 'no3_mg_l', 'so4_mg_l', 'f_mg_l',
-                      'total_hardness_mg_l', 'fe_mg_l', 'as_ppb', 'u_ppb', 'water_source']].to_dict(orient='records')
+            query += " AND district LIKE ?"
+            params.append(f"%{district}%")
+        query += " LIMIT ?"
+        params.append(limit)
+        records = query_db(query, params)
     else:
-        records = []
+        query = "SELECT * FROM water_quality_records WHERE data_type = ?"
+        params = [data_type]
+        if district:
+            query += " AND (district LIKE ? OR station_location LIKE ? OR state LIKE ?)"
+            params.extend([f"%{district}%", f"%{district}%", f"%{district}%"])
+        query += " ORDER BY year DESC, district ASC LIMIT ?"
+        params.append(limit)
+        records = query_db(query, params)
 
     return jsonify({
         'count': len(records),
@@ -53,16 +58,12 @@ def get_water_quality():
 @data_bp.route('/api/rainfall', methods=['GET'])
 def get_rainfall():
     data_type = request.args.get('data_type', 'REAL_PUBLIC_SOURCE')
+    limit = int(request.args.get('limit', 200))
     
-    file_name = 'synthetic_demo_dataset.csv' if data_type == 'SYNTHETIC_DEMO' else 'JalRakshak_Integrated_Dataset.csv'
-    csv_path = os.path.join(PROCESSED_DIR, file_name)
-
-    if os.path.exists(csv_path):
-        df = pd.read_csv(csv_path)
-        df_rf = df[['year', 'month', 'season', 'district', 'state', 'rainfall_mm', 'rainfall_anomaly', 'rainfall_source']].dropna(subset=['rainfall_mm'])
-        records = df_rf.to_dict(orient='records')
+    if data_type == 'SYNTHETIC_DEMO':
+        records = query_db("SELECT * FROM risk_scores WHERE data_type = ? LIMIT ?", (data_type, limit))
     else:
-        records = []
+        records = query_db("SELECT * FROM rainfall_records WHERE data_type = ? ORDER BY year DESC LIMIT ?", (data_type, limit))
 
     return jsonify({
         'count': len(records),
@@ -70,22 +71,80 @@ def get_rainfall():
         'records': records
     })
 
+@data_bp.route('/api/health-incidents', methods=['GET'])
 @data_bp.route('/api/health-data', methods=['GET'])
 def get_health_data():
     data_type = request.args.get('data_type', 'REAL_PUBLIC_SOURCE')
+    limit = int(request.args.get('limit', 100))
     
-    file_name = 'synthetic_demo_dataset.csv' if data_type == 'SYNTHETIC_DEMO' else 'JalRakshak_Integrated_Dataset.csv'
-    csv_path = os.path.join(PROCESSED_DIR, file_name)
-
-    if os.path.exists(csv_path):
-        df = pd.read_csv(csv_path)
-        df_h = df[['year', 'district', 'state', 'health_value', 'health_indicator', 'health_source']].dropna(subset=['health_value'])
-        records = df_h.to_dict(orient='records')
+    if data_type == 'SYNTHETIC_DEMO':
+        records = query_db("SELECT * FROM risk_scores WHERE data_type = ? LIMIT ?", (data_type, limit))
     else:
-        records = []
+        records = query_db("SELECT * FROM health_records WHERE data_type = ? ORDER BY year DESC LIMIT ?", (data_type, limit))
 
     return jsonify({
         'count': len(records),
         'data_type': data_type,
         'records': records
+    })
+
+@data_bp.route('/api/data-explorer', methods=['GET'])
+def get_data_explorer():
+    data_type = request.args.get('data_type', 'REAL_PUBLIC_SOURCE')
+    district = request.args.get('district')
+    state = request.args.get('state')
+    risk_class = request.args.get('risk_class')
+    limit = int(request.args.get('limit', 500))
+
+    query = "SELECT * FROM risk_scores WHERE data_type = ?"
+    params = [data_type]
+
+    if district:
+        query += " AND district LIKE ?"
+        params.append(f"%{district}%")
+    if state:
+        query += " AND state LIKE ?"
+        params.append(f"%{state}%")
+    if risk_class:
+        query += " AND risk_class = ?"
+        params.append(risk_class)
+
+    query += " ORDER BY risk_score DESC LIMIT ?"
+    params.append(limit)
+
+    records = query_db(query, params)
+    return jsonify({
+        'count': len(records),
+        'data_type': data_type,
+        'records': records
+    })
+
+@data_bp.route('/api/data-status', methods=['GET'])
+def get_data_status():
+    real_integrated_count = query_db("SELECT COUNT(*) as cnt FROM risk_scores WHERE data_type = 'REAL_PUBLIC_SOURCE'")[0]['cnt']
+    cgwb_count = query_db("SELECT COUNT(*) as cnt FROM water_quality_records WHERE data_type = 'REAL_PUBLIC_SOURCE'")[0]['cnt']
+    imd_count = query_db("SELECT COUNT(*) as cnt FROM rainfall_records WHERE data_type = 'REAL_PUBLIC_SOURCE'")[0]['cnt']
+    mohfw_count = query_db("SELECT COUNT(*) as cnt FROM health_records WHERE data_type = 'REAL_PUBLIC_SOURCE'")[0]['cnt']
+    loc_count = query_db("SELECT COUNT(*) as cnt FROM locations")[0]['cnt']
+    sources = query_db("SELECT * FROM data_sources")
+
+    return jsonify({
+        'status': 'healthy',
+        'data_mode': 'REAL_PUBLIC_SOURCE',
+        'total_real_records': real_integrated_count,
+        'hmis_record_count': mohfw_count,
+        'rainfall_record_count': imd_count,
+        'cgwb_record_count': cgwb_count,
+        'integrated_record_count': real_integrated_count,
+        'locations_count': loc_count,
+        'api_module_availability': {
+            'summary': True,
+            'locations': True,
+            'water_quality': True,
+            'rainfall': True,
+            'health_incidents': True,
+            'risk_monitoring': True,
+            'data_explorer': True
+        },
+        'data_sources': sources
     })

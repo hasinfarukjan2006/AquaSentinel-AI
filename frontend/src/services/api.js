@@ -20,7 +20,7 @@ export const fetchLocations = async (dataType = 'SYNTHETIC_DEMO') => {
 
 export const fetchRiskRecords = async (dataType = 'SYNTHETIC_DEMO', params = {}) => {
   const query = new URLSearchParams({ data_type: dataType, ...params }).toString();
-  const res = await axios.get(`${API_BASE}/risk?${query}`);
+  const res = await axios.get(`${API_BASE}/risk-monitoring?${query}`);
   return res.data;
 };
 
@@ -41,7 +41,18 @@ export const fetchRainfall = async (dataType = 'SYNTHETIC_DEMO') => {
 };
 
 export const fetchHealthData = async (dataType = 'SYNTHETIC_DEMO') => {
-  const res = await axios.get(`${API_BASE}/health-data?data_type=${dataType}`);
+  const res = await axios.get(`${API_BASE}/health-incidents?data_type=${dataType}`);
+  return res.data;
+};
+
+export const fetchDataExplorer = async (dataType = 'SYNTHETIC_DEMO', params = {}) => {
+  const query = new URLSearchParams({ data_type: dataType, ...params }).toString();
+  const res = await axios.get(`${API_BASE}/data-explorer?${query}`);
+  return res.data;
+};
+
+export const fetchDataStatus = async () => {
+  const res = await axios.get(`${API_BASE}/data-status`);
   return res.data;
 };
 

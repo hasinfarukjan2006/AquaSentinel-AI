@@ -37,9 +37,9 @@ export default function RiskMap({ locations, onSelectLocation }) {
     <div className="w-full h-96 rounded-xl overflow-hidden border border-slate-200 shadow-sm relative z-0">
       {validLocations.length === 0 ? (
         <div className="w-full h-full flex flex-col items-center justify-center bg-slate-100 text-slate-500 text-sm p-4">
-          <p className="font-semibold">No geographic coordinates available in current dataset view.</p>
+          <p className="font-semibold">No geographic coordinates available in current view.</p>
           <p className="text-xs text-slate-400 mt-1">
-            Real national summary dataset provides state/national aggregates. Toggle Demo Mode to inspect interactive station coordinates.
+            Displaying {validLocations.length} locations with valid coordinates out of {locations.length} total monitored locations.
           </p>
         </div>
       ) : (

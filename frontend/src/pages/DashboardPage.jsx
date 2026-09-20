@@ -62,11 +62,9 @@ export default function DashboardPage({ dataType, onSelectLocation }) {
     CRITICAL: '#8b5cf6'
   };
 
-  const topHighRisk = (summary.high_risk_locations || [])[0] || {
-    district: 'Salem',
-    risk_score: 72,
-    risk_class: 'VERY HIGH'
-  };
+  const topHighRisk = (summary.high_risk_locations && summary.high_risk_locations.length > 0)
+    ? summary.high_risk_locations[0]
+    : { district: 'N/A', risk_score: 0, risk_class: 'LOW' };
 
   return (
     <div className="space-y-4 sm:space-y-6 pb-16 lg:pb-0">

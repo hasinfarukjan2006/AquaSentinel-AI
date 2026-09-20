@@ -45,7 +45,7 @@ def api_summary():
     high_risk_locs = query_db("""
         SELECT DISTINCT district, state, risk_score, risk_class, data_availability_status
         FROM risk_scores 
-        WHERE data_type = ? AND risk_score >= 70.0
+        WHERE data_type = ?
         ORDER BY risk_score DESC
         LIMIT 10
     """, (data_type,))

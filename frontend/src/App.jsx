@@ -47,7 +47,7 @@ export default function App() {
       case 'location_details':
         return (
           <LocationDetailsPage
-            districtName={selectedDistrict || 'Salem'}
+            districtName={selectedDistrict || 'Ntr'}
             dataType={dataType}
             onBack={() => setActiveTab('risk_monitoring')}
           />

@@ -1,0 +1,58 @@
+source_name,canonical_name,state,match_method,confidence,review_required,match_status
+Alluri,Alluri,Andhra Pradesh,EXACT_NORMALIZED,1.0,False,MATCHED
+Anakapalli,Anakapalli,Andhra Pradesh,EXACT_NORMALIZED,1.0,False,MATCHED
+Anantapuram,Anantapuram,Andhra Pradesh,EXACT_NORMALIZED,1.0,False,MATCHED
+Annamayya,Annamayya,Andhra Pradesh,EXACT_NORMALIZED,1.0,False,MATCHED
+Bapatla,Bapatla,Andhra Pradesh,EXACT_NORMALIZED,1.0,False,MATCHED
+Chittoor,Chittoor,Andhra Pradesh,EXACT_NORMALIZED,1.0,False,MATCHED
+East,East,Andhra Pradesh,EXACT_NORMALIZED,1.0,False,MATCHED
+Eluru,Eluru,Andhra Pradesh,EXACT_NORMALIZED,1.0,False,MATCHED
+Guntur,Guntur,Andhra Pradesh,EXACT_NORMALIZED,1.0,False,MATCHED
+Kakinada,Kakinada,Andhra Pradesh,EXACT_NORMALIZED,1.0,False,MATCHED
+Konaseema,Konaseema,Andhra Pradesh,EXACT_NORMALIZED,1.0,False,MATCHED
+Krishna,Krishna,Andhra Pradesh,EXACT_NORMALIZED,1.0,False,MATCHED
+Kurnool,Kurnool,Andhra Pradesh,EXACT_NORMALIZED,1.0,False,MATCHED
+Manyam,Manyam,Andhra Pradesh,EXACT_NORMALIZED,1.0,False,MATCHED
+Nandyal,Nandyal,Andhra Pradesh,EXACT_NORMALIZED,1.0,False,MATCHED
+Nellore,Nellore,Andhra Pradesh,EXACT_NORMALIZED,1.0,False,MATCHED
+NTR,Ntr,Andhra Pradesh,EXACT_NORMALIZED,1.0,False,MATCHED
+Palnadu,Palnadu,Andhra Pradesh,EXACT_NORMALIZED,1.0,False,MATCHED
+Prakasam,Prakasam,Andhra Pradesh,EXACT_NORMALIZED,1.0,False,MATCHED
+Sri,Sri,Andhra Pradesh,EXACT_NORMALIZED,1.0,False,MATCHED
+Srikakulam,Srikakulam,Andhra Pradesh,EXACT_NORMALIZED,1.0,False,MATCHED
+Tirupati,Tirupati,Andhra Pradesh,EXACT_NORMALIZED,1.0,False,MATCHED
+Visakhapatnam,Visakhapatnam,Andhra Pradesh,EXACT_NORMALIZED,1.0,False,MATCHED
+Vizianagaram,Vizianagaram,Andhra Pradesh,EXACT_NORMALIZED,1.0,False,MATCHED
+West,West,Andhra Pradesh,EXACT_NORMALIZED,1.0,False,MATCHED
+YSR,Ysr,Andhra Pradesh,EXACT_NORMALIZED,1.0,False,MATCHED
+PAPUMPARE,Papumpare,Arunachal Pradesh,EXACT_NORMALIZED,1.0,False,MATCHED
+LOWER,Lower,Arunachal Pradesh,EXACT_NORMALIZED,1.0,False,MATCHED
+EAST,East,Arunachal Pradesh,EXACT_NORMALIZED,1.0,False,MATCHED
+Changlang,Changlang,Arunachal Pradesh,EXACT_NORMALIZED,1.0,False,MATCHED
+Tirap,Tirap,Arunachal Pradesh,EXACT_NORMALIZED,1.0,False,MATCHED
+Lohit,Lohit,Arunachal Pradesh,EXACT_NORMALIZED,1.0,False,MATCHED
+Goalpara,Goalpara,Assam,EXACT_NORMALIZED,1.0,False,MATCHED
+Kamrup,Kamrup,Assam,EXACT_NORMALIZED,1.0,False,MATCHED
+Darrang,Darrang,Assam,EXACT_NORMALIZED,1.0,False,MATCHED
+Udalguri,Udalguri,Assam,EXACT_NORMALIZED,1.0,False,MATCHED
+Sonitpur,Sonitpur,Assam,EXACT_NORMALIZED,1.0,False,MATCHED
+East,East,Assam,EXACT_NORMALIZED,1.0,False,MATCHED
+Hojai,Hojai,Assam,EXACT_NORMALIZED,1.0,False,MATCHED
+Morigaon,Morigaon,Assam,EXACT_NORMALIZED,1.0,False,MATCHED
+Nagaon,Nagaon,Assam,EXACT_NORMALIZED,1.0,False,MATCHED
+West,West,Assam,EXACT_NORMALIZED,1.0,False,MATCHED
+Golaghat,Golaghat,Assam,EXACT_NORMALIZED,1.0,False,MATCHED
+Jorhat,Jorhat,Assam,EXACT_NORMALIZED,1.0,False,MATCHED
+Karbi,Karbi,Assam,EXACT_NORMALIZED,1.0,False,MATCHED
+Charaideo,Charaideo,Assam,EXACT_NORMALIZED,1.0,False,MATCHED
+Sivasagar,Sivasagar,Assam,EXACT_NORMALIZED,1.0,False,MATCHED
+LAKHIMPUR,Lakhimpur,Assam,EXACT_NORMALIZED,1.0,False,MATCHED
+DHEMAJI,Dhemaji,Assam,EXACT_NORMALIZED,1.0,False,MATCHED
+Majuli,Majuli,Assam,EXACT_NORMALIZED,1.0,False,MATCHED
+Biswanath,Biswanath,Assam,EXACT_NORMALIZED,1.0,False,MATCHED
+Tinsukia,Tinsukia,Assam,EXACT_NORMALIZED,1.0,False,MATCHED
+Dibrugarh,Dibrugarh,Assam,EXACT_NORMALIZED,1.0,False,MATCHED
+Sibsagar,Sibsagar,Assam,EXACT_NORMALIZED,1.0,False,MATCHED
+Karimganj,Karimganj,Assam,EXACT_NORMALIZED,1.0,False,MATCHED
+Cachar,Cachar,Assam,EXACT_NORMALIZED,1.0,False,MATCHED
+Hailakandi,Hailakandi,Assam,EXACT_NORMALIZED,1.0,False,MATCHED

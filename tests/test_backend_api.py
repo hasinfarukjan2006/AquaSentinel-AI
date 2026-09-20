@@ -1,0 +1,53 @@
+import os
+import sys
+import pytest
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from backend.app import app
+
+@pytest.fixture
+def client():
+    app.config['TESTING'] = True
+    with app.test_client() as client:
+        yield client
+
+def test_api_health(client):
+    res = client.get('/api/health')
+    assert res.status_code == 200
+    data = res.get_json()
+    assert data['status'] == 'healthy'
+    assert 'AquaSentinel' in data['service']
+
+def test_api_summary(client):
+    res = client.get('/api/summary?data_type=SYNTHETIC_DEMO')
+    assert res.status_code == 200
+    data = res.get_json()
+    assert 'monitored_locations' in data
+    assert 'risk_distribution' in data
+
+def test_api_locations(client):
+    res = client.get('/api/locations?data_type=SYNTHETIC_DEMO')
+    assert res.status_code == 200
+    data = res.get_json()
+    assert 'locations' in data
+    assert len(data['locations']) > 0
+
+def test_api_risk(client):
+    res = client.get('/api/risk?data_type=SYNTHETIC_DEMO&limit=10')
+    assert res.status_code == 200
+    data = res.get_json()
+    assert 'records' in data
+    assert len(data['records']) <= 10
+
+def test_api_risk_predict(client):
+    payload = {
+        'ph': 7.8, 'ec_us_cm': 1200.0, 'tds_mg_l': 600.0, 'cl_mg_l': 200.0,
+        'no3_mg_l': 55.0, 'so4_mg_l': 150.0, 'f_mg_l': 1.8, 'total_hardness_mg_l': 320.0,
+        'fe_mg_l': 0.8, 'rainfall_mm': 420.0, 'health_value': 120
+    }
+    res = client.post('/api/risk/predict', json=payload)
+    assert res.status_code == 200
+    data = res.get_json()
+    assert 'predicted_risk_score' in data
+    assert 'predicted_risk_class' in data

@@ -1,0 +1,4 @@
+Model,Dataset,Precision,Recall,F1_Score,ROC_AUC,Status
+Random Forest Classifier,Synthetic Demo Dataset,1.0,1.0,1.0,1.0,Valid Supervised Metric
+Logistic Regression Baseline,Synthetic Demo Dataset,1.0,1.0,1.0,1.0,Valid Supervised Metric
+All Models,Real Public Source Dataset,N/A,N/A,N/A,N/A,Insufficient labelled data for reliable supervised model evaluation

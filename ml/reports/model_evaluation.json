@@ -1,0 +1,45 @@
+{
+  "Synthetic_Demo_Dataset_Evaluation": {
+    "dataset": "Synthetic Demo Dataset",
+    "sample_count": 520,
+    "high_risk_positive_samples": 22,
+    "random_forest": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "roc_auc": 1.0,
+      "confusion_matrix": [
+        [
+          498,
+          0
+        ],
+        [
+          0,
+          22
+        ]
+      ]
+    },
+    "logistic_regression": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "roc_auc": 1.0,
+      "confusion_matrix": [
+        [
+          498,
+          0
+        ],
+        [
+          0,
+          22
+        ]
+      ]
+    }
+  },
+  "Real_Public_Source_Evaluation": {
+    "dataset": "JalRakshak Real Integrated Public Dataset",
+    "sample_count": 713,
+    "status_message": "Insufficient labelled data for reliable supervised model evaluation.",
+    "explanation": "Real national public health data source (Rajya Sabha AU 557) provides annual national aggregates rather than district-level confirmed epidemic ground-truth labels. Supervised metrics are reserved for synthetic demo mode to maintain strict technical honesty."
+  }
+}

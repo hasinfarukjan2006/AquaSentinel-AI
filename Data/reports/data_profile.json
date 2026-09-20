@@ -1,0 +1,129 @@
+{
+  "Health_Data": {
+    "source_file": "RS_Session_256_AU_557_1.csv",
+    "rows": 5,
+    "columns": [
+      "Water-borne diseases",
+      "No. of Cases Reported - 2019",
+      "No. of Cases Reported - 2020",
+      "No. of Cases Reported - 2021"
+    ],
+    "column_count": 4,
+    "years": [
+      "2019",
+      "2020",
+      "2021"
+    ],
+    "geographic_coverage": "National (India Aggregate)",
+    "missing_cells": 0,
+    "missing_percentage": 0.0,
+    "data_types": {
+      "Water-borne diseases": "str",
+      "No. of Cases Reported - 2019": "int64",
+      "No. of Cases Reported - 2020": "int64",
+      "No. of Cases Reported - 2021": "int64"
+    }
+  },
+  "Rainfall_Data": {
+    "source_file": "RF_AI_1901-2021.csv",
+    "rows": 121,
+    "columns": [
+      "YEAR",
+      "JUN",
+      "JUL",
+      "AUG",
+      "SEP",
+      "JUN-SEP"
+    ],
+    "column_count": 6,
+    "years": "1901 - 2021",
+    "geographic_coverage": "All-India Monsoon Sub-Divisions",
+    "missing_cells": 0,
+    "missing_percentage": 0.0,
+    "data_types": {
+      "YEAR": "int64",
+      "JUN": "float64",
+      "JUL": "float64",
+      "AUG": "float64",
+      "SEP": "float64",
+      "JUN-SEP": "float64"
+    }
+  },
+  "Water_Quality_Data": {
+    "source_file": "JalRakshak_Water_Quality_Real_Dataset.xlsx",
+    "sheet_name": "Water_Quality_Real",
+    "rows": 589,
+    "columns": [
+      "S_No",
+      "Year",
+      "Season",
+      "State_UT",
+      "District",
+      "Block_Taluka",
+      "Station_Location",
+      "Longitude",
+      "Latitude",
+      "pH",
+      "EC_uS_cm",
+      "TDS_mg_L",
+      "Cl_mg_L",
+      "NO3_mg_L",
+      "SO4_mg_L",
+      "F_mg_L",
+      "Total_Hardness_mg_L",
+      "Fe_mg_L",
+      "As_ppb",
+      "U_ppb",
+      "Mn_mg_L",
+      "Cu_mg_L",
+      "Pb_mg_L",
+      "Zn_mg_L",
+      "Ni_mg_L",
+      "Cd_mg_L",
+      "Cr_mg_L",
+      "Data_Source",
+      "Data_Type"
+    ],
+    "column_count": 29,
+    "years": "[2024]",
+    "states": [
+      "Andhra Pradesh",
+      "Arunachal Pradesh",
+      "Assam"
+    ],
+    "districts_count": 55,
+    "missing_cells": 3853,
+    "missing_percentage": 22.56,
+    "data_types": {
+      "S_No": "int64",
+      "Year": "int64",
+      "Season": "str",
+      "State_UT": "str",
+      "District": "str",
+      "Block_Taluka": "str",
+      "Station_Location": "str",
+      "Longitude": "float64",
+      "Latitude": "float64",
+      "pH": "float64",
+      "EC_uS_cm": "int64",
+      "TDS_mg_L": "int64",
+      "Cl_mg_L": "int64",
+      "NO3_mg_L": "int64",
+      "SO4_mg_L": "float64",
+      "F_mg_L": "float64",
+      "Total_Hardness_mg_L": "int64",
+      "Fe_mg_L": "float64",
+      "As_ppb": "float64",
+      "U_ppb": "float64",
+      "Mn_mg_L": "float64",
+      "Cu_mg_L": "float64",
+      "Pb_mg_L": "float64",
+      "Zn_mg_L": "float64",
+      "Ni_mg_L": "float64",
+      "Cd_mg_L": "float64",
+      "Cr_mg_L": "float64",
+      "Data_Source": "str",
+      "Data_Type": "str"
+    }
+  }
+}

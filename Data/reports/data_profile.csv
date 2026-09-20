@@ -1,0 +1,4 @@
+source,rows,columns,years,geographic_coverage,missing_pct,notes
+Health Data (Rajya Sabha),5,4,"2019, 2020, 2021",National,0.0,Reported cases for 5 key water-borne diseases
+Monsoon Rainfall (1901-2021),121,6,1901-2021,All-India,0.0,"Monthly monsoon (JUN, JUL, AUG, SEP) and total (JUN-SEP) in mm"
+CGWB Water Quality (2024),589,29,2024,"3 States (Andhra Pradesh, Arunachal Pradesh, Assam)",22.56,589 ground water stations across 55 districts

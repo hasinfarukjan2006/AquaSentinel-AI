@@ -5,7 +5,7 @@ alert_bp = Blueprint('alert', __name__)
 
 @alert_bp.route('/api/alerts', methods=['GET'])
 def get_alerts():
-    data_type = request.args.get('data_type', 'SYNTHETIC_DEMO')
+    data_type = request.args.get('data_type', 'REAL_PUBLIC_SOURCE')
     alert_level = request.args.get('level')
 
     query = "SELECT * FROM alerts WHERE data_type = ?"

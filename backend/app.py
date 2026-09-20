@@ -10,9 +10,14 @@ from backend.routes.risk_routes import risk_bp
 from backend.routes.data_routes import data_bp
 from backend.routes.alert_routes import alert_bp
 
+from database.init_db import ensure_db_initialized
+
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
+
+    # Automatically ensure database is initialized & seeded with integrated records
+    ensure_db_initialized()
 
     # Enable production CORS for React frontend origins
     origins = app.config.get('CORS_ALLOWED_ORIGINS', ['*'])

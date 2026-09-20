@@ -7,7 +7,7 @@ predictor = RiskPredictor()
 
 @risk_bp.route('/api/risk', methods=['GET'])
 def get_risk_records():
-    data_type = request.args.get('data_type', 'SYNTHETIC_DEMO')
+    data_type = request.args.get('data_type', 'REAL_PUBLIC_SOURCE')
     district = request.args.get('district')
     state = request.args.get('state')
     risk_class = request.args.get('risk_class')
@@ -38,7 +38,7 @@ def get_risk_records():
 
 @risk_bp.route('/api/risk/<location>', methods=['GET'])
 def get_location_risk(location):
-    data_type = request.args.get('data_type', 'SYNTHETIC_DEMO')
+    data_type = request.args.get('data_type', 'REAL_PUBLIC_SOURCE')
     
     records = query_db("""
         SELECT * FROM risk_scores 

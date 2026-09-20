@@ -24,7 +24,7 @@ import SystemInfoPage from './pages/SystemInfoPage';
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
   const [userRole, setUserRole] = useState('HEALTH_OFFICIAL');
-  const [dataType, setDataType] = useState('SYNTHETIC_DEMO');
+  const [dataType, setDataType] = useState('REAL_PUBLIC_SOURCE');
   const [activeTab, setActiveTab] = useState('dashboard');
   const [selectedDistrict, setSelectedDistrict] = useState(null);
   const [isMoreSheetOpen, setIsMoreSheetOpen] = useState(false);

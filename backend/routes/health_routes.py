@@ -30,7 +30,7 @@ def api_health():
 
 @health_bp.route('/api/summary', methods=['GET'])
 def api_summary():
-    data_type = request.args.get('data_type', 'SYNTHETIC_DEMO') # Default to DEMO mode for rich interactive dashboard presentation
+    data_type = request.args.get('data_type', 'REAL_PUBLIC_SOURCE') # Default to REAL production records
     
     total_locations = query_db("SELECT COUNT(DISTINCT district) as cnt FROM risk_scores WHERE data_type = ?", (data_type,), one=True)['cnt']
     total_records = query_db("SELECT COUNT(*) as cnt FROM risk_scores WHERE data_type = ?", (data_type,), one=True)['cnt']

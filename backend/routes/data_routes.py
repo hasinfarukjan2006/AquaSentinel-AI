@@ -8,7 +8,7 @@ data_bp = Blueprint('data', __name__)
 
 @data_bp.route('/api/locations', methods=['GET'])
 def get_locations():
-    data_type = request.args.get('data_type', 'SYNTHETIC_DEMO')
+    data_type = request.args.get('data_type', 'REAL_PUBLIC_SOURCE')
     locations = query_db("""
         SELECT r.state, r.district, AVG(l.latitude) as latitude, AVG(l.longitude) as longitude,
                MAX(r.risk_score) as latest_risk_score, MAX(r.risk_class) as latest_risk_class
@@ -26,7 +26,7 @@ def get_locations():
 
 @data_bp.route('/api/water-quality', methods=['GET'])
 def get_water_quality():
-    data_type = request.args.get('data_type', 'SYNTHETIC_DEMO')
+    data_type = request.args.get('data_type', 'REAL_PUBLIC_SOURCE')
     district = request.args.get('district')
     
     file_name = 'synthetic_demo_dataset.csv' if data_type == 'SYNTHETIC_DEMO' else 'JalRakshak_Integrated_Dataset.csv'
@@ -52,7 +52,7 @@ def get_water_quality():
 
 @data_bp.route('/api/rainfall', methods=['GET'])
 def get_rainfall():
-    data_type = request.args.get('data_type', 'SYNTHETIC_DEMO')
+    data_type = request.args.get('data_type', 'REAL_PUBLIC_SOURCE')
     
     file_name = 'synthetic_demo_dataset.csv' if data_type == 'SYNTHETIC_DEMO' else 'JalRakshak_Integrated_Dataset.csv'
     csv_path = os.path.join(PROCESSED_DIR, file_name)
@@ -72,7 +72,7 @@ def get_rainfall():
 
 @data_bp.route('/api/health-data', methods=['GET'])
 def get_health_data():
-    data_type = request.args.get('data_type', 'SYNTHETIC_DEMO')
+    data_type = request.args.get('data_type', 'REAL_PUBLIC_SOURCE')
     
     file_name = 'synthetic_demo_dataset.csv' if data_type == 'SYNTHETIC_DEMO' else 'JalRakshak_Integrated_Dataset.csv'
     csv_path = os.path.join(PROCESSED_DIR, file_name)

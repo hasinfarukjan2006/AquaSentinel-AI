@@ -147,12 +147,20 @@ def init_database():
     conn.commit()
 
     # Load data into DB
+    real_excel = os.path.join(PROCESSED_DIR, 'JalRakshak_Integrated_Dataset.xlsx')
     real_csv = os.path.join(PROCESSED_DIR, 'JalRakshak_Integrated_Dataset.csv')
     demo_csv = os.path.join(PROCESSED_DIR, 'synthetic_demo_dataset.csv')
 
     dfs_to_load = []
-    if os.path.exists(real_csv):
+    if os.path.exists(real_excel):
+        try:
+            dfs_to_load.append(pd.read_excel(real_excel, sheet_name=0))
+        except Exception:
+            if os.path.exists(real_csv):
+                dfs_to_load.append(pd.read_csv(real_csv))
+    elif os.path.exists(real_csv):
         dfs_to_load.append(pd.read_csv(real_csv))
+
     if os.path.exists(demo_csv):
         dfs_to_load.append(pd.read_csv(demo_csv))
 
@@ -163,7 +171,13 @@ def init_database():
         loc_df = df_all[['state', 'district', 'block_taluka', 'station_location', 'latitude', 'longitude']].drop_duplicates(subset=['state', 'district', 'station_location'])
         
         loc_rows_to_insert = [
-            (r['state'], r['district'], r['block_taluka'], r['station_location'], r['latitude'], r['longitude'])
+            (
+                r['state'], r['district'], 
+                None if pd.isna(r['block_taluka']) else str(r['block_taluka']), 
+                None if pd.isna(r['station_location']) else str(r['station_location']), 
+                None if pd.isna(r['latitude']) else float(r['latitude']), 
+                None if pd.isna(r['longitude']) else float(r['longitude'])
+            )
             for _, r in loc_df.iterrows()
         ]
 
@@ -188,23 +202,23 @@ def init_database():
             st = str(row['state'])
             dt = str(row['district'])
             yr = int(row['year']) if pd.notna(row['year']) else 2024
-            mth = str(row.get('month', 'N/A'))
-            sea = str(row.get('season', 'N/A'))
+            mth = str(row.get('month', 'N/A')) if pd.notna(row.get('month')) else 'N/A'
+            sea = str(row.get('season', 'N/A')) if pd.notna(row.get('season')) else 'N/A'
             r_score = float(row['risk_score']) if pd.notna(row.get('risk_score')) else 35.0
             r_class = str(row['risk_class']) if pd.notna(row.get('risk_class')) else 'MODERATE'
-            dtype = str(row.get('data_type', 'REAL_PUBLIC_SOURCE'))
+            dtype = str(row.get('data_type', 'REAL_PUBLIC_SOURCE')) if pd.notna(row.get('data_type')) else 'REAL_PUBLIC_SOURCE'
 
             risk_rows.append((
                 rec_id, loc_id, st, dt, yr, mth, sea, r_score, r_class,
-                float(row.get('health_risk_component', 0.2)),
-                float(row.get('water_risk_component', 0.2)),
-                float(row.get('env_risk_component', 0.2)),
-                float(row.get('hist_risk_component', 0.2)),
-                float(row.get('vuln_risk_component', 0.2)),
-                float(row.get('abnormal_risk_component', 0.1)),
-                float(row.get('anomaly_score', 0.0)),
-                int(row.get('abnormal_pattern_flag', 0)),
-                str(row.get('data_availability_status', 'PARTIAL')),
+                float(row.get('health_risk_component', 0.2)) if pd.notna(row.get('health_risk_component')) else 0.2,
+                float(row.get('water_risk_component', 0.2)) if pd.notna(row.get('water_risk_component')) else 0.2,
+                float(row.get('env_risk_component', 0.2)) if pd.notna(row.get('env_risk_component')) else 0.2,
+                float(row.get('hist_risk_component', 0.2)) if pd.notna(row.get('hist_risk_component')) else 0.2,
+                float(row.get('vuln_risk_component', 0.2)) if pd.notna(row.get('vuln_risk_component')) else 0.2,
+                float(row.get('abnormal_risk_component', 0.1)) if pd.notna(row.get('abnormal_risk_component')) else 0.1,
+                float(row.get('anomaly_score', 0.0)) if pd.notna(row.get('anomaly_score')) else 0.0,
+                int(row.get('abnormal_pattern_flag', 0)) if pd.notna(row.get('abnormal_pattern_flag')) else 0,
+                str(row.get('data_availability_status', 'PARTIAL')) if pd.notna(row.get('data_availability_status')) else 'PARTIAL',
                 dtype
             ))
 
@@ -236,10 +250,10 @@ def init_database():
 
         # Seed data sources
         cur.executescript("""
-        INSERT INTO data_sources (dataset_name, provider, coverage, last_updated, record_count) VALUES
-        ('CGWB Ground Water Quality 2024', 'Central Ground Water Board', '589 Stations (AP, Assam, Arunachal)', '2024-06-30', 589),
-        ('IMD All-India Monsoon Series', 'India Meteorological Department', '1901-2021 Monthly Monsoon', '2021-12-31', 121),
-        ('Rajya Sabha Disease Question No. 557', 'Ministry of Health & Family Welfare', 'National Aggregate (2019-2021)', '2021-12-31', 5);
+        INSERT OR IGNORE INTO data_sources (source_id, dataset_name, provider, coverage, last_updated, record_count) VALUES
+        (1, 'CGWB Ground Water Quality 2024', 'Central Ground Water Board', '589 Stations (AP, Assam, Arunachal)', '2024-06-30', 589),
+        (2, 'IMD All-India Monsoon Series', 'India Meteorological Department', '1901-2021 Monthly Monsoon', '2021-12-31', 121),
+        (3, 'Rajya Sabha Disease Question No. 557', 'Ministry of Health & Family Welfare', 'National Aggregate (2019-2021)', '2021-12-31', 5);
         """)
 
         conn.commit()
@@ -247,5 +261,27 @@ def init_database():
 
     conn.close()
 
+def ensure_db_initialized():
+    """Checks if database table risk_scores exists and has records; if not, initializes it."""
+    try:
+        if not os.path.exists(DB_PATH):
+            print("Database file missing. Initializing database...")
+            init_database()
+            return
+
+        conn = sqlite3.connect(DB_PATH)
+        cur = conn.cursor()
+        cur.execute("SELECT COUNT(*) FROM risk_scores")
+        cnt = cur.fetchone()[0]
+        conn.close()
+        if cnt == 0:
+            print("Database table risk_scores is empty. Seeding database...")
+            init_database()
+    except Exception as e:
+        print(f"Database check failed ({e}). Initializing database...")
+        init_database()
+
 if __name__ == '__main__':
+    init_database()
+
     init_database()

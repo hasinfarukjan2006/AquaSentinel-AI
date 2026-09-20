@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const RAW_BASE = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/+$/, '');
+const RAW_BASE = (import.meta.env.VITE_API_BASE_URL || 'https://aquasentinel-ai-4mlr.onrender.com').replace(/\/+$/, '');
 const API_BASE = RAW_BASE ? (RAW_BASE.endsWith('/api') ? RAW_BASE : `${RAW_BASE}/api`) : '/api';
 
 export const fetchHealth = async () => {

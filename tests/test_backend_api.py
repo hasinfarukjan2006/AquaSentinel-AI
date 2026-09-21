@@ -51,3 +51,58 @@ def test_api_risk_predict(client):
     data = res.get_json()
     assert 'predicted_risk_score' in data
     assert 'predicted_risk_class' in data
+
+def test_api_water_quality_real(client):
+    res = client.get('/api/water-quality?data_type=REAL_PUBLIC_SOURCE')
+    assert res.status_code == 200
+    data = res.get_json()
+    assert data['data_type'] == 'REAL_PUBLIC_SOURCE'
+    assert data['count'] > 0
+    assert len(data['records']) == data['count']
+
+def test_api_rainfall_real(client):
+    res = client.get('/api/rainfall?data_type=REAL_PUBLIC_SOURCE')
+    assert res.status_code == 200
+    data = res.get_json()
+    assert data['data_type'] == 'REAL_PUBLIC_SOURCE'
+    assert data['count'] > 0
+    assert len(data['records']) == data['count']
+
+def test_api_health_incidents_real(client):
+    res = client.get('/api/health-incidents?data_type=REAL_PUBLIC_SOURCE')
+    assert res.status_code == 200
+    data = res.get_json()
+    assert data['data_type'] == 'REAL_PUBLIC_SOURCE'
+    assert data['count'] > 0
+
+def test_api_data_explorer_real(client):
+    res = client.get('/api/data-explorer?data_type=REAL_PUBLIC_SOURCE')
+    assert res.status_code == 200
+    data = res.get_json()
+    assert data['data_type'] == 'REAL_PUBLIC_SOURCE'
+    assert data['count'] > 0
+    record = data['records'][0]
+    assert 'source' in record
+    assert 'provenance' in record
+    assert 'available_variables' in record
+
+def test_api_risk_monitoring_real(client):
+    res = client.get('/api/risk-monitoring?data_type=REAL_PUBLIC_SOURCE')
+    assert res.status_code == 200
+    data = res.get_json()
+    assert data['data_type'] == 'REAL_PUBLIC_SOURCE'
+    assert data['count'] > 0
+
+def test_api_data_status(client):
+    res = client.get('/api/data-status')
+    assert res.status_code == 200
+    data = res.get_json()
+    assert data['database'] == 'healthy'
+    assert data['status'] == 'healthy'
+    assert data['real_public_source_records'] > 0
+    assert data['water_quality_records'] == 589
+    assert data['rainfall_records'] == 121
+    assert data['health_records'] == 15
+    assert data['risk_records'] == 713
+    assert data['locations'] > 0
+

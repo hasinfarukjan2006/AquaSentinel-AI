@@ -8,44 +8,44 @@ export const fetchHealth = async () => {
   return res.data;
 };
 
-export const fetchSummary = async (dataType = 'SYNTHETIC_DEMO') => {
+export const fetchSummary = async (dataType = 'REAL_PUBLIC_SOURCE') => {
   const res = await axios.get(`${API_BASE}/summary?data_type=${dataType}`);
   return res.data;
 };
 
-export const fetchLocations = async (dataType = 'SYNTHETIC_DEMO') => {
+export const fetchLocations = async (dataType = 'REAL_PUBLIC_SOURCE') => {
   const res = await axios.get(`${API_BASE}/locations?data_type=${dataType}`);
   return res.data;
 };
 
-export const fetchRiskRecords = async (dataType = 'SYNTHETIC_DEMO', params = {}) => {
+export const fetchRiskRecords = async (dataType = 'REAL_PUBLIC_SOURCE', params = {}) => {
   const query = new URLSearchParams({ data_type: dataType, ...params }).toString();
   const res = await axios.get(`${API_BASE}/risk-monitoring?${query}`);
   return res.data;
 };
 
-export const fetchLocationRisk = async (location, dataType = 'SYNTHETIC_DEMO') => {
+export const fetchLocationRisk = async (location, dataType = 'REAL_PUBLIC_SOURCE') => {
   const res = await axios.get(`${API_BASE}/risk/${encodeURIComponent(location)}?data_type=${dataType}`);
   return res.data;
 };
 
-export const fetchWaterQuality = async (dataType = 'SYNTHETIC_DEMO', district = '') => {
+export const fetchWaterQuality = async (dataType = 'REAL_PUBLIC_SOURCE', district = '') => {
   const query = new URLSearchParams({ data_type: dataType, district }).toString();
   const res = await axios.get(`${API_BASE}/water-quality?${query}`);
   return res.data;
 };
 
-export const fetchRainfall = async (dataType = 'SYNTHETIC_DEMO') => {
+export const fetchRainfall = async (dataType = 'REAL_PUBLIC_SOURCE') => {
   const res = await axios.get(`${API_BASE}/rainfall?data_type=${dataType}`);
   return res.data;
 };
 
-export const fetchHealthData = async (dataType = 'SYNTHETIC_DEMO') => {
+export const fetchHealthData = async (dataType = 'REAL_PUBLIC_SOURCE') => {
   const res = await axios.get(`${API_BASE}/health-incidents?data_type=${dataType}`);
   return res.data;
 };
 
-export const fetchDataExplorer = async (dataType = 'SYNTHETIC_DEMO', params = {}) => {
+export const fetchDataExplorer = async (dataType = 'REAL_PUBLIC_SOURCE', params = {}) => {
   const query = new URLSearchParams({ data_type: dataType, ...params }).toString();
   const res = await axios.get(`${API_BASE}/data-explorer?${query}`);
   return res.data;
@@ -56,7 +56,7 @@ export const fetchDataStatus = async () => {
   return res.data;
 };
 
-export const fetchAlerts = async (dataType = 'SYNTHETIC_DEMO', level = '') => {
+export const fetchAlerts = async (dataType = 'REAL_PUBLIC_SOURCE', level = '') => {
   const query = new URLSearchParams({ data_type: dataType, level }).toString();
   const res = await axios.get(`${API_BASE}/alerts?${query}`);
   return res.data;

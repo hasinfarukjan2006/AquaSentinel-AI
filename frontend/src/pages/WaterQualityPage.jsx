@@ -66,104 +66,112 @@ export default function WaterQualityPage({ dataType }) {
         </div>
       </div>
 
-      {/* Mobile Stacked Cards (<768px) */}
-      <div className="block md:hidden space-y-3">
-        {filtered.slice(0, 50).map((r, i) => (
-          <div key={i} className="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-2.5">
-            <div className="flex items-start justify-between">
-              <div>
-                <h3 className="font-bold text-slate-900 text-base">{r.district}</h3>
-                <p className="text-xs text-slate-500">{r.station_location} ({r.state})</p>
-              </div>
-              <span className="text-[10px] font-mono bg-slate-100 px-2 py-0.5 rounded text-slate-600">
-                {r.year}
-              </span>
-            </div>
+      {!loading && filtered.length === 0 ? (
+        <div className="p-8 text-center bg-white rounded-xl border border-slate-200 text-slate-500 text-sm font-medium">
+          No real records available for this source
+        </div>
+      ) : (
+        <>
+          {/* Mobile Stacked Cards (<768px) */}
+          <div className="block md:hidden space-y-3">
+            {filtered.slice(0, 50).map((r, i) => (
+              <div key={i} className="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-2.5">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <h3 className="font-bold text-slate-900 text-base">{r.district}</h3>
+                    <p className="text-xs text-slate-500">{r.station_location} ({r.state})</p>
+                  </div>
+                  <span className="text-[10px] font-mono bg-slate-100 px-2 py-0.5 rounded text-slate-600">
+                    {r.year}
+                  </span>
+                </div>
 
-            <div className="grid grid-cols-3 gap-2 text-xs bg-slate-50 p-2.5 rounded-lg border border-slate-100 font-mono">
-              <div>
-                <span className="text-slate-400 text-[10px] block">pH</span>
-                <span className={r.ph < 6.5 || r.ph > 8.5 ? 'text-rose-600 font-bold' : 'text-slate-800'}>
-                  {r.ph !== null ? r.ph : '—'}
-                </span>
-              </div>
-              <div>
-                <span className="text-slate-400 text-[10px] block">TDS (mg/L)</span>
-                <span className={r.tds_mg_l > 500 ? 'text-amber-700 font-bold' : 'text-slate-800'}>
-                  {r.tds_mg_l !== null ? r.tds_mg_l : '—'}
-                </span>
-              </div>
-              <div>
-                <span className="text-slate-400 text-[10px] block">NO3 (mg/L)</span>
-                <span className={r.no3_mg_l > 45 ? 'text-rose-600 font-bold' : 'text-slate-800'}>
-                  {r.no3_mg_l !== null ? r.no3_mg_l : '—'}
-                </span>
-              </div>
-            </div>
-
-            <div className="text-[11px] text-slate-400 font-mono">
-              Source: {r.water_source}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Desktop Table (>=768px) */}
-      <div className="hidden md:block bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs text-slate-600">
-            <thead className="bg-slate-100 text-slate-700 uppercase font-semibold border-b">
-              <tr>
-                <th className="py-3 px-3">Station / District</th>
-                <th className="py-3 px-3">State</th>
-                <th className="py-3 px-3">pH</th>
-                <th className="py-3 px-3">EC (µS/cm)</th>
-                <th className="py-3 px-3">TDS (mg/L)</th>
-                <th className="py-3 px-3">NO3 (mg/L)</th>
-                <th className="py-3 px-3">F (mg/L)</th>
-                <th className="py-3 px-3">Fe (mg/L)</th>
-                <th className="py-3 px-3">Hardness</th>
-                <th className="py-3 px-3">Source</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100">
-              {filtered.slice(0, 100).map((r, i) => (
-                <tr key={i} className="hover:bg-slate-50">
-                  <td className="py-2.5 px-3">
-                    <div className="font-bold text-slate-900">{r.district}</div>
-                    <div className="text-[11px] text-slate-400">{r.station_location}</div>
-                  </td>
-                  <td className="py-2.5 px-3">{r.state}</td>
-                  <td className="py-2.5 px-3 font-semibold">
+                <div className="grid grid-cols-3 gap-2 text-xs bg-slate-50 p-2.5 rounded-lg border border-slate-100 font-mono">
+                  <div>
+                    <span className="text-slate-400 text-[10px] block">pH</span>
                     <span className={r.ph < 6.5 || r.ph > 8.5 ? 'text-rose-600 font-bold' : 'text-slate-800'}>
                       {r.ph !== null ? r.ph : '—'}
                     </span>
-                  </td>
-                  <td className="py-2.5 px-3 font-mono">{r.ec_us_cm !== null ? r.ec_us_cm : '—'}</td>
-                  <td className="py-2.5 px-3 font-mono">
+                  </div>
+                  <div>
+                    <span className="text-slate-400 text-[10px] block">TDS (mg/L)</span>
                     <span className={r.tds_mg_l > 500 ? 'text-amber-700 font-bold' : 'text-slate-800'}>
                       {r.tds_mg_l !== null ? r.tds_mg_l : '—'}
                     </span>
-                  </td>
-                  <td className="py-2.5 px-3 font-mono">
+                  </div>
+                  <div>
+                    <span className="text-slate-400 text-[10px] block">NO3 (mg/L)</span>
                     <span className={r.no3_mg_l > 45 ? 'text-rose-600 font-bold' : 'text-slate-800'}>
                       {r.no3_mg_l !== null ? r.no3_mg_l : '—'}
                     </span>
-                  </td>
-                  <td className="py-2.5 px-3 font-mono">
-                    <span className={r.f_mg_l > 1.5 ? 'text-orange-600 font-bold' : 'text-slate-800'}>
-                      {r.f_mg_l !== null ? r.f_mg_l : '—'}
-                    </span>
-                  </td>
-                  <td className="py-2.5 px-3 font-mono">{r.fe_mg_l !== null ? r.fe_mg_l : '—'}</td>
-                  <td className="py-2.5 px-3 font-mono">{r.total_hardness_mg_l !== null ? r.total_hardness_mg_l : '—'}</td>
-                  <td className="py-2.5 px-3 text-[11px] text-slate-400">{r.water_source}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+                  </div>
+                </div>
+
+                <div className="text-[11px] text-slate-400 font-mono">
+                  Source: {r.water_source}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop Table (>=768px) */}
+          <div className="hidden md:block bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs text-slate-600">
+                <thead className="bg-slate-100 text-slate-700 uppercase font-semibold border-b">
+                  <tr>
+                    <th className="py-3 px-3">Station / District</th>
+                    <th className="py-3 px-3">State</th>
+                    <th className="py-3 px-3">pH</th>
+                    <th className="py-3 px-3">EC (µS/cm)</th>
+                    <th className="py-3 px-3">TDS (mg/L)</th>
+                    <th className="py-3 px-3">NO3 (mg/L)</th>
+                    <th className="py-3 px-3">F (mg/L)</th>
+                    <th className="py-3 px-3">Fe (mg/L)</th>
+                    <th className="py-3 px-3">Hardness</th>
+                    <th className="py-3 px-3">Source</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {filtered.slice(0, 100).map((r, i) => (
+                    <tr key={i} className="hover:bg-slate-50">
+                      <td className="py-2.5 px-3">
+                        <div className="font-bold text-slate-900">{r.district}</div>
+                        <div className="text-[11px] text-slate-400">{r.station_location}</div>
+                      </td>
+                      <td className="py-2.5 px-3">{r.state}</td>
+                      <td className="py-2.5 px-3 font-semibold">
+                        <span className={r.ph < 6.5 || r.ph > 8.5 ? 'text-rose-600 font-bold' : 'text-slate-800'}>
+                          {r.ph !== null ? r.ph : '—'}
+                        </span>
+                      </td>
+                      <td className="py-2.5 px-3 font-mono">{r.ec_us_cm !== null ? r.ec_us_cm : '—'}</td>
+                      <td className="py-2.5 px-3 font-mono">
+                        <span className={r.tds_mg_l > 500 ? 'text-amber-700 font-bold' : 'text-slate-800'}>
+                          {r.tds_mg_l !== null ? r.tds_mg_l : '—'}
+                        </span>
+                      </td>
+                      <td className="py-2.5 px-3 font-mono">
+                        <span className={r.no3_mg_l > 45 ? 'text-rose-600 font-bold' : 'text-slate-800'}>
+                          {r.no3_mg_l !== null ? r.no3_mg_l : '—'}
+                        </span>
+                      </td>
+                      <td className="py-2.5 px-3 font-mono">
+                        <span className={r.f_mg_l > 1.5 ? 'text-orange-600 font-bold' : 'text-slate-800'}>
+                          {r.f_mg_l !== null ? r.f_mg_l : '—'}
+                        </span>
+                      </td>
+                      <td className="py-2.5 px-3 font-mono">{r.fe_mg_l !== null ? r.fe_mg_l : '—'}</td>
+                      <td className="py-2.5 px-3 font-mono">{r.total_hardness_mg_l !== null ? r.total_hardness_mg_l : '—'}</td>
+                      <td className="py-2.5 px-3 text-[11px] text-slate-400">{r.water_source}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </>
+      )}
 
     </div>
   );

@@ -1,1 +1,9 @@
 .pnpm-store/
+.vercel
+pytest-cache-files-*
+node_modules/
+frontend/node_modules/
+__pycache__/
+*.pyc
+
+

@@ -22,17 +22,40 @@ export default function DashboardPage({ dataType, onSelectLocation }) {
     async function loadDashboardData() {
       setLoading(true);
       try {
-        const sumRes = await fetchSummary(dataType);
-        const locRes = await fetchLocations(dataType);
-        const altRes = await fetchAlerts(dataType);
-        const rfRes = await fetchRainfall(dataType);
+        const [sumSettled, locSettled, altSettled, rfSettled] = await Promise.allSettled([
+          fetchSummary(dataType),
+          fetchLocations(dataType),
+          fetchAlerts(dataType),
+          fetchRainfall(dataType)
+        ]);
 
-        setSummary(sumRes);
-        setLocations(locRes.locations || []);
-        setAlerts(altRes.alerts || []);
-        setRainfallData(rfRes.records || []);
+        if (sumSettled.status === 'fulfilled') {
+          setSummary(sumSettled.value);
+        } else {
+          console.error('[REAL MODE DEBUG] fetchSummary failed:', sumSettled.reason);
+        }
+
+        if (locSettled.status === 'fulfilled') {
+          const fetchedLocs = locSettled.value.locations || locSettled.value || [];
+          console.log(`[REAL MODE DEBUG] Received ${fetchedLocs.length} locations for data_type=${dataType}`);
+          setLocations(fetchedLocs);
+        } else {
+          console.error('[REAL MODE DEBUG] fetchLocations failed:', locSettled.reason);
+        }
+
+        if (altSettled.status === 'fulfilled') {
+          setAlerts(altSettled.value.alerts || altSettled.value || []);
+        } else {
+          console.error('[REAL MODE DEBUG] fetchAlerts failed:', altSettled.reason);
+        }
+
+        if (rfSettled.status === 'fulfilled') {
+          setRainfallData(rfSettled.value.records || rfSettled.value || []);
+        } else {
+          console.error('[REAL MODE DEBUG] fetchRainfall failed:', rfSettled.reason);
+        }
       } catch (err) {
-        console.error("Error loading dashboard data:", err);
+        console.error("[REAL MODE DEBUG] Unexpected error in loadDashboardData:", err);
       } finally {
         setLoading(false);
       }

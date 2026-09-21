@@ -106,3 +106,10 @@ def test_api_data_status(client):
     assert data['risk_records'] == 713
     assert data['locations'] > 0
 
+def test_cors_headers(client):
+    res = client.options('/api/locations?data_type=REAL_PUBLIC_SOURCE')
+    assert res.headers.get('Access-Control-Allow-Origin') == '*'
+
+    res = client.get('/api/locations?data_type=REAL_PUBLIC_SOURCE')
+    assert res.headers.get('Access-Control-Allow-Origin') == '*'
+

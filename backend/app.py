@@ -32,6 +32,14 @@ def create_app():
             methods=["GET", "POST", "OPTIONS"]
         )
 
+    # Universal CORS header enforcer to ensure preflights and requests from Vercel never fail
+    @app.after_request
+    def add_cors_headers(response):
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, Accept, X-Requested-With'
+        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS, PUT, DELETE'
+        return response
+
     # Register blueprints
     app.register_blueprint(health_bp)
     app.register_blueprint(risk_bp)

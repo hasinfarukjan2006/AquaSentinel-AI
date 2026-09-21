@@ -29,9 +29,16 @@ export default function RiskMap({ locations, onSelectLocation }) {
   const defaultCenter = [15.5000, 79.5000];
   const defaultZoom = 6;
 
-  const validLocations = locations.filter(
-    (loc) => loc.latitude && loc.longitude && !isNaN(loc.latitude) && !isNaN(loc.longitude)
-  );
+  const validLocations = locations.filter((loc) => {
+    if (loc.latitude === null || loc.latitude === undefined || loc.longitude === null || loc.longitude === undefined) {
+      return false;
+    }
+    const lat = Number(loc.latitude);
+    const lng = Number(loc.longitude);
+    return !isNaN(lat) && !isNaN(lng) && lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180;
+  });
+
+  console.log(`[REAL MODE DEBUG] RiskMap received ${locations.length} locations, ${validLocations.length} valid coordinates.`);
 
   return (
     <div className="w-full h-96 rounded-xl overflow-hidden border border-slate-200 shadow-sm relative z-0">
@@ -57,7 +64,7 @@ export default function RiskMap({ locations, onSelectLocation }) {
           {validLocations.map((loc, idx) => (
             <Marker
               key={idx}
-              position={[loc.latitude, loc.longitude]}
+              position={[Number(loc.latitude), Number(loc.longitude)]}
               icon={createCustomIcon(getMarkerColor(loc.latest_risk_class))}
             >
               <Popup>
